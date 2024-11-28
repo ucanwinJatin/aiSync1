@@ -78,7 +78,7 @@ except RuntimeError:
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-GOOGLE_API_KEY = "AIzaSyCruOjusCfgSYI7CMsr_7u_uFq8JMR9RtQ"
+GOOGLE_API_KEY = "AIzaSyBIBr01u6_BNVfYk989DXkv3FKQA928Kq8"
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-1.5-pro",
