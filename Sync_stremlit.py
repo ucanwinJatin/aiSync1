@@ -230,52 +230,52 @@ if st.button("Proceed"):
         
 
 
-question = st.text_input("Ask your question 👇")
-# Display the user input
-if st.button("Doc chat"):
-    if question:
-        GOOGLE_API_KEY="AIzaSyCruOjusCfgSYI7CMsr_7u_uFq8JMR9RtQ"
+# question = st.text_input("Ask your question 👇")
+# # Display the user input
+# if st.button("Doc chat"):
+#     if question:
+#         GOOGLE_API_KEY="AIzaSyCruOjusCfgSYI7CMsr_7u_uFq8JMR9RtQ"
 
-        model = ChatGoogleGenerativeAI(model="gemini-1.0-pro",google_api_key=GOOGLE_API_KEY,
-                                    temperature=0.3,convert_system_message_to_human=True)
-        embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
-        data = data_to_text(file_path)
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-        content = "\n\n".join(str(page.page_content) for page in data)
-        texts = text_splitter.split_text(content)
-        print(len(texts))
+#         model = ChatGoogleGenerativeAI(model="gemini-1.0-pro",google_api_key=GOOGLE_API_KEY,
+#                                     temperature=0.3,convert_system_message_to_human=True)
+#         embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
+#         data = data_to_text(file_path)
+#         text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+#         content = "\n\n".join(str(page.page_content) for page in data)
+#         texts = text_splitter.split_text(content)
+#         print(len(texts))
 
-        # texts = text_split(data)  # Assuming text_split is used to split the question into sentences or tokens
-        # embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
-        vector_index = FAISS.from_documents(data, embeddings).as_retriever()
-        docs = vector_index.get_relevant_documents(question)
-        prompt_template = """
-        Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
-        provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
-        Context:\n {context}?\n
-        Question: \n{question}\n
+#         # texts = text_split(data)  # Assuming text_split is used to split the question into sentences or tokens
+#         # embeddings = GoogleGenerativeAIEmbeddings(model = "models/embedding-001")
+#         vector_index = FAISS.from_documents(data, embeddings).as_retriever()
+#         docs = vector_index.get_relevant_documents(question)
+#         prompt_template = """
+#         Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
+#         provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
+#         Context:\n {context}?\n
+#         Question: \n{question}\n
 
-        Answer:
-        """
-        # model = ChatGoogleGenerativeAI(model="gemini-pro",
-        #                      temperature=0.3)
+#         Answer:
+#         """
+#         # model = ChatGoogleGenerativeAI(model="gemini-pro",
+#         #                      temperature=0.3)
 
-        prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "question"])
-        chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
+#         prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "question"])
+#         chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
         
-        response = chain(
-            {"input_documents":docs, "question": question}
-            , return_only_outputs=True)
-        # qa_chain = RetrievalQA.from_chain_type(
-        #     model,
-        #     retriever=vector_index,
-        #     return_source_documents=True
-        # )
+#         response = chain(
+#             {"input_documents":docs, "question": question}
+#             , return_only_outputs=True)
+#         # qa_chain = RetrievalQA.from_chain_type(
+#         #     model,
+#         #     retriever=vector_index,
+#         #     return_source_documents=True
+#         # )
         
 
-        # result = qa_chain({"query": question})
-        st.write("Chat Bot response:")
-        st.write(response["output_text"])
+#         # result = qa_chain({"query": question})
+#         st.write("Chat Bot response:")
+#         st.write(response["output_text"])
 
 
 
